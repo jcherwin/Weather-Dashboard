@@ -94,13 +94,53 @@ var getCityWeather = function (cityObj) {
 
 var displayCityWeather = function (weatherObj, cityObj) {
 
+  cityWeather.date = dayjs.unix(weatherObj.dt).format("MM/DD/YYYY");
+  cityWeather.temp = weatherObj.main.temp;
+  cityWeather.wind = weatherObj.wind.speed;
+  cityWeather.humidity = weatherObj.main.humidity;
+  cityWeather.icon = weatherObj.weather[0].icon;
+  cityWeather.icon = "http://openweathermap.org/img/wn/" + cityWeather.icon + "@2x.png";
+  cityWeather.iconalt = weatherObj.weather[0].description;
+
+  createHTML(cityWeather, cityObj);
     
 }
 
 var displayCityForecast = function (weatherObj, cityObj) {
 
+  var headerEl = document.createElement('h3');
+  headerEl.textContent = "5-Day Forecast (all times Noon UTC):";
+  var divRowEl = document.createElement('div');
+  divRowEl.classList = 'row';    
+  forecastContainerEl.appendChild(headerEl);
+  forecastContainerEl.appendChild(divRowEl);
 
+  for (var i = 0; i < weatherObj.list.length; i++) {
+    
+    cityWeather.hour = weatherObj.list[i].dt_txt;
+    cityWeather.hour = cityWeather.hour.split(' ')[1];
+    cityWeather.date = dayjs.unix(weatherObj.list[i].dt).format("MM/DD/YYYY");
+
+    if(cityWeather.hour === "12:00:00"){      
+
+      cityWeather.temp = weatherObj.list[i].main.temp;
+      cityWeather.wind = weatherObj.list[i].wind.speed;
+      cityWeather.humidity = weatherObj.list[i].main.humidity;
+      cityWeather.icon = weatherObj.list[i].weather[0].icon
+      cityWeather.icon = "http://openweathermap.org/img/wn/" + cityWeather.icon + ".png";
+      cityWeather.iconalt = weatherObj.list[i].weather[0].description;
+
+      //console.log(cityWeather);
+      //console.log(weatherObj.list[i]);
+      createHTML(cityWeather, cityObj); 
+    }
+  }
+  //console.log(weatherObj);
 };
+
+var createHTML = function (weatherObj, cityObj) {
+
+}
 
 userFormEl.addEventListener('submit', formSubmitHandler);
 historyButtonsEl.addEventListener('click', buttonClickHandler);
