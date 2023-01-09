@@ -139,7 +139,57 @@ var displayCityForecast = function (weatherObj, cityObj) {
 };
 
 var createHTML = function (weatherObj, cityObj) {
+  var titleEl = document.createElement('h2');
+  var titleElOptions = 
+    "<img "
+    + "src='" + weatherObj.icon + "' "
+    + "alt='" + weatherObj.iconalt + "'"
+    + ">";
+  if(cityObj.forecast){
+    titleEl.innerHTML = 
+      " (" + weatherObj.date + ") "
+      + titleElOptions;
+  }else{
+    titleEl.innerHTML = 
+      cityObj.name
+      + " (" + weatherObj.date + ") "
+      + titleElOptions;
+  }        
 
+  var tempEl = document.createElement('p');
+  tempEl.innerHTML =
+    "Temp: " + weatherObj.temp + " &#176;F";    
+
+  var windEl = document.createElement('p');
+  windEl.innerHTML = 
+    "Wind: " + weatherObj.wind + " MPH";    
+
+  var humidityEl = document.createElement('p');
+  humidityEl.innerHTML = 
+    "Humidity: " + weatherObj.humidity + " %";  
+
+  if(!cityObj.forecast){    
+    weatherContainerEl.appendChild(titleEl);
+    weatherContainerEl.appendChild(tempEl);
+    weatherContainerEl.appendChild(windEl);
+    weatherContainerEl.appendChild(humidityEl);
+  }else{
+    
+    var cardEl = document.createElement('div');
+    cardEl.classList = 'card col-md-6 col-lg-4';
+    var cardBodyEl = document.createElement('div');
+    cardBodyEl.classList = 'card-body';
+
+    cardBodyEl.appendChild(titleEl);
+    cardBodyEl.appendChild(tempEl);
+    cardBodyEl.appendChild(windEl);
+    cardBodyEl.appendChild(humidityEl);
+
+    cardEl.appendChild(cardBodyEl);
+
+    var forecastContainerRowEl = document.querySelector('#forecast-container').children[1];
+    forecastContainerRowEl.appendChild(cardEl);
+  }
 }
 
 userFormEl.addEventListener('submit', formSubmitHandler);
