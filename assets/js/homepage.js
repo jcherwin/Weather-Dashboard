@@ -35,8 +35,18 @@ var formSubmitHandler = function (event) {
 
     weatherContainerEl.textContent = '';
     forecastContainerEl.textContent = '';
-    cityInputEl.value = '';   
+    cityInputEl.value = '';
+    
+    var storage = readFromStorage(KEY_HISTORY);
+    if(storage.length < 10){
+      storage.push(city.name);
+    }else{
+      storage.shift();
+      storage.push(city.name);
+    }    
+    saveToStorage(KEY_HISTORY, storage);
 
+    displayHistoryButtons();
   } else {
     alert('Please enter a City name');
   }
@@ -50,6 +60,31 @@ var buttonClickHandler = function (event) {
 
     weatherContainerEl.textContent = '';
     forecastContainerEl.textContent = '';
+  }
+};
+
+function readFromStorage(key) {
+  var data = localStorage.getItem(key);
+  if (data) { data = JSON.parse(data) }
+  else { data = [] }
+  return data;
+};
+
+function saveToStorage(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+};
+
+function displayHistoryButtons() {
+  historyButtonsEl.textContent = '';
+  var storage = readFromStorage(KEY_HISTORY);
+
+  for (var x in storage){
+    var buttonEl = document.createElement('button');
+    buttonEl.classList = 'btn history-btn';
+    buttonEl.setAttribute('data-language',storage[x]);
+    buttonEl.textContent = storage[x];
+
+    historyButtonsEl.appendChild(buttonEl);
   }
 };
 
@@ -194,3 +229,4 @@ var createHTML = function (weatherObj, cityObj) {
 
 userFormEl.addEventListener('submit', formSubmitHandler);
 historyButtonsEl.addEventListener('click', buttonClickHandler);
+displayHistoryButtons();
