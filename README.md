@@ -8,7 +8,7 @@ This program utilizes different web development aspects such as: JavaScript (Eve
 
 ## Link
 
-This is a link to the project hosted on GitHub Pages: []()
+This is a link to the project hosted on GitHub Pages: [https://jcherwin.github.io/Weather-Dashboard/](https://jcherwin.github.io/Weather-Dashboard/)
 
 ## Usage
 
